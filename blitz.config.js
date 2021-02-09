@@ -1,4 +1,7 @@
-const { sessionMiddleware, simpleRolesIsAuthorized } = require("@blitzjs/server")
+const {
+  sessionMiddleware,
+  simpleRolesIsAuthorized,
+} = require('@blitzjs/server');
 
 module.exports = {
   middleware: [
@@ -14,4 +17,4 @@ module.exports = {
     return config
   },
   */
-}
+};

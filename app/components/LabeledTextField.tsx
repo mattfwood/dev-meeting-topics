@@ -1,15 +1,15 @@
-import React, { PropsWithoutRef } from "react";
-import { useField, useFormikContext, ErrorMessage } from "formik";
+import React, { PropsWithoutRef } from 'react';
+import { useField, useFormikContext, ErrorMessage } from 'formik';
 
 export interface LabeledTextFieldProps
-  extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
+  extends PropsWithoutRef<JSX.IntrinsicElements['input']> {
   /** Field name. */
   name: string;
   /** Field label. */
   label: string;
   /** Field type. Doesn't include radio buttons and checkboxes */
-  type?: "text" | "password" | "email" | "number";
-  outerProps?: PropsWithoutRef<JSX.IntrinsicElements["div"]>;
+  type?: 'text' | 'password' | 'email' | 'number';
+  outerProps?: PropsWithoutRef<JSX.IntrinsicElements['div']>;
 }
 
 export const LabeledTextField = React.forwardRef<
@@ -28,7 +28,7 @@ export const LabeledTextField = React.forwardRef<
 
       <ErrorMessage name={name}>
         {(msg) => (
-          <div role="alert" style={{ color: "red" }}>
+          <div role="alert" style={{ color: 'red' }}>
             {msg}
           </div>
         )}
