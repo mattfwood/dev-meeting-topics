@@ -1,5 +1,6 @@
 import React, { PropsWithoutRef } from 'react';
 import { useField, useFormikContext, ErrorMessage } from 'formik';
+import { Input } from 'minerva-ui';
 
 export interface LabeledTextFieldProps
   extends PropsWithoutRef<JSX.IntrinsicElements['input']> {
@@ -23,7 +24,7 @@ export const LabeledTextField = React.forwardRef<
     <div {...outerProps}>
       <label>
         {label}
-        <input {...input} disabled={isSubmitting} {...props} ref={ref} />
+        <Input {...input} disabled={isSubmitting} {...props} ref={ref} />
       </label>
 
       <ErrorMessage name={name}>

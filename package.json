@@ -32,6 +32,7 @@
     "blitz": "0.29.7",
     "eslint-config-cratebind": "6.0.3",
     "formik": "2.2.6",
+    "minerva-ui": "7.1.6",
     "passport-google-oauth20": "2.0.0",
     "react": "0.0.0-experimental-3310209d0",
     "react-dom": "0.0.0-experimental-3310209d0",

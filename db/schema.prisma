@@ -36,3 +36,21 @@ model Session {
   publicData         String?
   privateData        String?
 }
+
+model Feature {
+  id          Int      @default(autoincrement()) @id
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String
+  author      User
+}
+
+model Vote {
+  id        Int      @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  value     Int      @default(0)
+  user      User
+  feature   Feature
+}

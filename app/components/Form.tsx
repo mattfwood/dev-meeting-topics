@@ -1,15 +1,17 @@
 import React, { useState, ReactNode, PropsWithoutRef } from 'react';
 import { Formik, FormikProps } from 'formik';
 import * as z from 'zod';
+import { Button } from 'minerva-ui';
 
 type FormProps<S extends z.ZodType<any, any>> = {
   /** All your form fields */
   children: ReactNode;
   /** Text to display in the submit button */
-  submitText: string;
+  submitText?: string;
   schema?: S;
   onSubmit: (values: z.infer<S>) => Promise<void | OnSubmitResult>;
   initialValues?: FormikProps<z.infer<S>>['initialValues'];
+  resetFormOnSubmit?: boolean;
 } & Omit<PropsWithoutRef<JSX.IntrinsicElements['form']>, 'onSubmit'>;
 
 type OnSubmitResult = {
@@ -25,6 +27,7 @@ export function Form<S extends z.ZodType<any, any>>({
   schema,
   initialValues,
   onSubmit,
+  resetFormOnSubmit,
   ...props
 }: FormProps<S>) {
   const [formError, setFormError] = useState<string | null>(null);
@@ -39,15 +42,22 @@ export function Form<S extends z.ZodType<any, any>>({
           return error.formErrors.fieldErrors;
         }
       }}
-      onSubmit={async (values, { setErrors }) => {
+      onSubmit={async (values, { setErrors, resetForm }) => {
         const { FORM_ERROR, ...otherErrors } = (await onSubmit(values)) || {};
 
         if (FORM_ERROR) {
           setFormError(FORM_ERROR);
         }
 
-        if (Object.keys(otherErrors).length > 0) {
+        const hasOtherErrors = Object.keys(otherErrors).length > 0;
+
+        if (hasOtherErrors) {
           setErrors(otherErrors);
+        }
+
+        // if no errors, reset form
+        if (!FORM_ERROR && !hasOtherErrors && resetFormOnSubmit) {
+          resetForm(initialValues);
         }
       }}
     >
@@ -62,15 +72,11 @@ export function Form<S extends z.ZodType<any, any>>({
             </div>
           )}
 
-          <button type="submit" disabled={isSubmitting}>
-            {submitText}
-          </button>
-
-          <style global jsx>{`
-            .form > * + * {
-              margin-top: 1rem;
-            }
-          `}</style>
+          {Boolean(submitText) && (
+            <Button type="submit" disabled={isSubmitting}>
+              {submitText}
+            </Button>
+          )}
         </form>
       )}
     </Formik>
