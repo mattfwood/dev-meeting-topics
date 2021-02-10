@@ -44,6 +44,7 @@ model Feature {
   title       String
   description String
   author      User
+  votes       Vote[]
 }
 
 model Vote {
@@ -52,5 +53,6 @@ model Vote {
   updatedAt DateTime @updatedAt
   value     Int      @default(0)
   user      User
-  feature   Feature
+  feature    Feature  @relation(fields: [featureId], references: [id])
+  featureId  Int
 }

@@ -8,8 +8,20 @@ import {
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { queryCache } from 'react-query';
 import LoginForm from 'app/auth/components/LoginForm';
-import { ThemeProvider, GlobalStyles, Flex, Box } from 'minerva-ui';
+import {
+  ThemeProvider,
+  GlobalStyles,
+  Flex,
+  Box,
+  defaultIcons,
+  defaultTheme,
+} from 'minerva-ui';
 import React from 'react';
+
+const theme = {
+  ...defaultTheme,
+  icons: defaultIcons,
+};
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page);
@@ -25,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
         queryCache.resetErrorBoundaries();
       }}
     >
-      <ThemeProvider>
+      <ThemeProvider theme={theme}>
         <GlobalStyles />
         <Flex justifyContent="center">
           <Box maxWidth="1080px" width="100%" px={3}>

@@ -17,7 +17,7 @@ export default async function getFeatures(
     orderBy,
     take,
     skip,
-    include: { author: true },
+    include: { author: true, votes: true },
   });
 
   const count = await db.feature.count();
