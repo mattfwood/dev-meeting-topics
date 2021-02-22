@@ -27,10 +27,13 @@ export default passportAuth({
             return done(new Error("Google OAuth response doesn't have email."));
           }
 
+          const avatar = profile?.photos?.[0]?.value;
+
           const user = await db.user.upsert({
             where: { email },
             create: {
               email,
+              avatar,
               name: profile.displayName,
             },
             update: { email, name: profile.displayName },
