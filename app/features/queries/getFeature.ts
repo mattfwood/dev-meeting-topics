@@ -4,7 +4,7 @@ import db, { Prisma } from 'db';
 type GetFeatureInput = Pick<Prisma.FindFirstFeatureArgs, 'where'>;
 
 export default async function getFeature({ where }: GetFeatureInput, ctx: Ctx) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const feature = await db.feature.findFirst({ where });
 

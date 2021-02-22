@@ -2,12 +2,14 @@
   "name": "blitz-oauth",
   "version": "1.0.0",
   "scripts": {
+    "dev": "blitz dev",
     "start": "blitz start",
     "studio": "blitz prisma studio",
     "build": "blitz build",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "test": "jest",
     "test:watch": "jest --watch",
+    "prisma:generate": "blitz prisma generate",
     "db:migrate": "blitz prisma migrate dev --preview-feature",
     "db:deploy": "blitz prisma migrate deploy --preview-feature",
     "db:reset": "blitz prisma migrate reset --preview-feature"
@@ -32,7 +34,7 @@
   "dependencies": {
     "@prisma/cli": "~2.14",
     "@prisma/client": "~2.14",
-    "blitz": "0.29.7",
+    "blitz": "0.30.0",
     "eslint-config-cratebind": "6.0.3",
     "formik": "2.2.6",
     "minerva-ui": "7.1.6",

@@ -9,7 +9,7 @@ import {
 import Layout from 'app/layouts/Layout';
 import logout from 'app/auth/mutations/logout';
 import { useCurrentUser } from 'app/hooks/useCurrentUser';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import {
   Button,
   Modal,
@@ -29,6 +29,79 @@ import createFeature from 'app/features/mutations/createFeature';
 import getFeatures from 'app/features/queries/getFeatures';
 import createVote from 'app/votes/mutations/createVote';
 
+const Feature = ({ feature, onVote }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const currentUser = useCurrentUser();
+
+  const votedOnFeature = feature.votes.some(
+    (vote) => vote.userId === currentUser?.id
+  );
+
+  return (
+    <Flex key={feature.id}>
+      <Box mr={2}>
+        <Button
+          border={0}
+          p={2}
+          disabled={isLoading}
+          onClick={async () => {
+            setIsLoading(true);
+            await onVote(feature.id);
+            setIsLoading(false);
+          }}
+        >
+          <Box>
+            <Box color={votedOnFeature ? 'purple.700' : 'inherit'}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                fill="currentColor"
+                viewBox="0 0 256 256"
+              >
+                <rect width="256" height="256" fill="none" />
+                <path d="M213.65674,154.34326l-80-80a8,8,0,0,0-11.31348,0l-80,80A7.99981,7.99981,0,0,0,48,168H208a7.99981,7.99981,0,0,0,5.65674-13.65674Z" />
+              </svg>
+            </Box>
+            {feature.votes.length}
+          </Box>
+        </Button>
+      </Box>
+      <Box mb={6}>
+        <Link href={`/features/${feature.id}`}>
+          <a>
+            <Heading
+              as="h2"
+              color="gray.900"
+              fontSize="lg"
+              fontWeight="500"
+              mb={2}
+            >
+              {feature.title}
+            </Heading>
+          </a>
+        </Link>
+        <Text fontWeight={400} color="gray.600" fontSize="base" lineHeight={1}>
+          {feature.description}
+        </Text>
+        <Flex justifyContent="space-between" mt={2} alignItems="flex-end">
+          <Link href={`/features/${feature.id}`}>
+            <a>
+              <Text color="gray.500" fontSize="base">
+                {/* {feature.posts.length} Comments */}
+              </Text>
+            </a>
+          </Link>
+
+          <Text color="gray.400" fontSize="xs">
+            {feature.author?.name}
+          </Text>
+        </Flex>
+      </Box>
+    </Flex>
+  );
+};
+
 const FeatureList = () => {
   const [{ features }, { refetch }] = useQuery(
     getFeatures,
@@ -39,8 +112,6 @@ const FeatureList = () => {
       // initialData,
     }
   );
-
-  const currentUser = useCurrentUser();
 
   const [voteMutation] = useMutation(createVote);
 
@@ -53,70 +124,13 @@ const FeatureList = () => {
   };
 
   return (
-    <Box>
+    <Box my={2}>
       {features?.map((feature) => {
-        const votedOnFeature = feature.votes.some(
-          (vote) => vote.userId === currentUser?.id
-        );
-
         return (
-          <Flex key={feature.id}>
-            <Box mr={2}>
-              <Button border={0} p={2} onClick={() => handleClick(feature.id)}>
-                <Box>
-                  <Box color={votedOnFeature ? 'purple.700' : 'inherit'}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="28"
-                      height="28"
-                      fill="currentColor"
-                      viewBox="0 0 256 256"
-                    >
-                      <rect width="256" height="256" fill="none" />
-                      <path d="M213.65674,154.34326l-80-80a8,8,0,0,0-11.31348,0l-80,80A7.99981,7.99981,0,0,0,48,168H208a7.99981,7.99981,0,0,0,5.65674-13.65674Z" />
-                    </svg>
-                  </Box>
-                  {feature.votes.length}
-                </Box>
-              </Button>
-            </Box>
-            <Box mb={6}>
-              <Link href={`/features/${feature.id}`}>
-                <a>
-                  <Heading
-                    as="h2"
-                    color="gray.900"
-                    fontSize="lg"
-                    fontWeight="500"
-                    mb={2}
-                  >
-                    {feature.title}
-                  </Heading>
-                </a>
-              </Link>
-              <Text
-                fontWeight={400}
-                color="gray.600"
-                fontSize="base"
-                lineHeight={1}
-              >
-                {feature.description}
-              </Text>
-              <Flex justifyContent="space-between" mt={2} alignItems="flex-end">
-                <Link href={`/features/${feature.id}`}>
-                  <a>
-                    <Text color="gray.500" fontSize="base">
-                      {/* {feature.posts.length} Comments */}
-                    </Text>
-                  </a>
-                </Link>
-
-                <Text color="gray.400" fontSize="xs">
-                  {feature.author?.name}
-                </Text>
-              </Flex>
-            </Box>
-          </Flex>
+          <Feature
+            feature={feature}
+            onVote={async () => await handleClick(feature.id)}
+          />
         );
       })}
     </Box>

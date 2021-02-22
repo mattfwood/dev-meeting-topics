@@ -6,7 +6,7 @@ export default async function createFeature(
   { data }: CreateFeatureInput,
   ctx: Ctx
 ) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const feature = await db.feature.create({
     data: {

@@ -10,7 +10,7 @@ export default async function getVotes(
   { where, orderBy, skip = 0, take }: GetVotesInput,
   ctx: Ctx
 ) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const votes = await db.vote.findMany({
     where,

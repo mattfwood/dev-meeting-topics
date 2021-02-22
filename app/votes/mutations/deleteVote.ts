@@ -4,7 +4,7 @@ import db, { Prisma } from 'db';
 type DeleteVoteInput = Pick<Prisma.VoteDeleteArgs, 'where'>;
 
 export default async function deleteVote({ where }: DeleteVoteInput, ctx: Ctx) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const vote = await db.vote.delete({ where });
 

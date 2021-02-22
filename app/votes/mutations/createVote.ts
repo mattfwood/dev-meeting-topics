@@ -11,7 +11,7 @@ export default async function createVote(
   { data }: { data: CreateVoteInput },
   ctx: Ctx
 ) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const existingVote = await db.vote.findFirst({
     where: {
@@ -20,7 +20,13 @@ export default async function createVote(
   });
 
   if (existingVote) {
-    return null;
+    const vote = await db.vote.delete({
+      where: {
+        id: existingVote.id,
+      },
+    });
+
+    return vote;
   }
 
   const vote = await db.vote.create({

@@ -7,7 +7,7 @@ export default async function deleteFeature(
   { where }: DeleteFeatureInput,
   ctx: Ctx
 ) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const feature = await db.feature.delete({ where });
 

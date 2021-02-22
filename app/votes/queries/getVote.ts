@@ -4,7 +4,7 @@ import db, { Prisma } from 'db';
 type GetVoteInput = Pick<Prisma.FindFirstVoteArgs, 'where'>;
 
 export default async function getVote({ where }: GetVoteInput, ctx: Ctx) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const vote = await db.vote.findFirst({ where });
 

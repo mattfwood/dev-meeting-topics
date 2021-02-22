@@ -7,7 +7,7 @@ export default async function updateVote(
   { where, data }: UpdateVoteInput,
   ctx: Ctx
 ) {
-  ctx.session.authorize();
+  ctx.session.$authorize();
 
   const vote = await db.vote.update({ where, data });
 
