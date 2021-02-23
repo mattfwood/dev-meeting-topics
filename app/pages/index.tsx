@@ -22,6 +22,7 @@ import {
   Box,
   Heading,
   Text,
+  Image,
 } from 'minerva-ui';
 import Form, { FORM_ERROR } from 'app/components/Form';
 import LabeledTextField from 'app/components/LabeledTextField';
@@ -38,7 +39,7 @@ const Feature = ({ feature, onVote }) => {
   );
 
   return (
-    <Flex key={feature.id}>
+    <Flex key={feature.id} mt={1}>
       <Box mr={2}>
         <Button
           border={0}
@@ -84,14 +85,14 @@ const Feature = ({ feature, onVote }) => {
         <Text fontWeight={400} color="gray.600" fontSize="base" lineHeight={1}>
           {feature.description}
         </Text>
-        <Flex justifyContent="space-between" mt={2} alignItems="flex-end">
-          <Link href={`/features/${feature.id}`}>
-            <a>
-              <Text color="gray.500" fontSize="base">
-                {/* {feature.posts.length} Comments */}
-              </Text>
-            </a>
-          </Link>
+        <Flex mt={3} alignItems="center">
+          <Image
+            src={feature.author?.avatar}
+            width="30px"
+            height="30px"
+            borderRadius="full"
+            mr={2}
+          />
 
           <Text color="gray.400" fontSize="xs">
             {feature.author?.name}
@@ -125,7 +126,7 @@ const FeatureList = () => {
   };
 
   return (
-    <Box my={2}>
+    <Box my={2} pt={2}>
       {features?.map((feature) => {
         return (
           <Feature
