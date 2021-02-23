@@ -204,18 +204,24 @@ const UserInfo = () => {
   if (currentUser) {
     return (
       <>
-        <Flex justifyContent="space-between">
-          <div>{currentUser.name}</div>
-          <Button
-            className="button small"
-            onClick={async () => {
-              await logoutMutation();
-            }}
-          >
-            Logout
-          </Button>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Box>
+            <FeatureModal />
+          </Box>
+          <Flex alignItems="center">
+            <div>{currentUser.name}</div>
+            <Button
+              ml={2}
+              className="button small"
+              onClick={async () => {
+                await logoutMutation();
+              }}
+            >
+              Logout
+            </Button>
+          </Flex>
         </Flex>
-        <FeatureModal />
+
         <FeatureList />
       </>
     );
