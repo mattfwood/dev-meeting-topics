@@ -15,12 +15,16 @@ import {
   Box,
   defaultIcons,
   defaultTheme,
+  MinervaTheme,
 } from 'minerva-ui';
 import React from 'react';
 
-const theme = {
+const theme: MinervaTheme = {
   ...defaultTheme,
   icons: defaultIcons,
+  // Button: {
+  //   backgroundColor: 'purple.500',
+  // },
 };
 
 export default function App({ Component, pageProps }: AppProps) {

@@ -69,19 +69,19 @@ const Feature = ({ feature, onVote }) => {
         </Button>
       </Box>
       <Flex flexDirection="column" mb={6} flex={1}>
-        <Link href={`/features/${feature.id}`}>
-          <a>
-            <Heading
-              as="h2"
-              color="gray.900"
-              fontSize="lg"
-              fontWeight="500"
-              mb={2}
-            >
-              {feature.title}
-            </Heading>
-          </a>
-        </Link>
+        {/* <Link href={`/features/${feature.id}`}> */}
+        <a>
+          <Heading
+            as="h2"
+            color="gray.900"
+            fontSize="lg"
+            fontWeight="500"
+            mb={2}
+          >
+            {feature.title}
+          </Heading>
+        </a>
+        {/* </Link> */}
         <Text fontWeight={400} color="gray.600" fontSize="base" lineHeight={1}>
           {feature.description}
         </Text>
@@ -145,7 +145,9 @@ const FeatureModal = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>Create Feature</Button>
+      <Button variant="primary" onClick={onOpen}>
+        Create Feature
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose} overflow="hidden">
         <ModalHeader onClose={onClose}>Create New Feature</ModalHeader>
 
@@ -181,7 +183,7 @@ const FeatureModal = () => {
           </ModalBody>
           <ModalFooter px={6} py={3} bg="gray.50">
             <Flex flexDirection={['column', 'row-reverse']} radiusBottom="5px">
-              <Button type="submit" boxShadow="base" width={['100%', 'auto']}>
+              <Button type="submit" width={['100%', 'auto']} variant="primary">
                 Create Feature
               </Button>
             </Flex>
@@ -211,6 +213,7 @@ const UserInfo = () => {
           <Flex alignItems="center">
             <div>{currentUser.name}</div>
             <Button
+              variant="secondary"
               ml={2}
               className="button small"
               onClick={async () => {
@@ -226,7 +229,13 @@ const UserInfo = () => {
       </>
     );
   } else {
-    return <Link href="/api/auth/google">Log In With Google</Link>;
+    return (
+      <Link href="/api/auth/google">
+        <Button as="a" variant="primary">
+          Log In With Google
+        </Button>
+      </Link>
+    );
   }
 };
 
