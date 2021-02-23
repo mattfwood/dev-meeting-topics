@@ -2,7 +2,7 @@ import { Ctx } from 'blitz';
 import db, { Prisma } from 'db';
 
 type GetFeaturesInput = Pick<
-  Prisma.FindManyFeatureArgs,
+  Prisma.FeatureFindManyArgs,
   'where' | 'orderBy' | 'skip' | 'take'
 >;
 

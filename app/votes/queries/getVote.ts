@@ -1,7 +1,7 @@
 import { Ctx, NotFoundError } from 'blitz';
 import db, { Prisma } from 'db';
 
-type GetVoteInput = Pick<Prisma.FindFirstVoteArgs, 'where'>;
+type GetVoteInput = Pick<Prisma.VoteFindFirstArgs, 'where'>;
 
 export default async function getVote({ where }: GetVoteInput, ctx: Ctx) {
   ctx.session.$authorize();

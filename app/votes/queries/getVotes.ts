@@ -2,7 +2,7 @@ import { Ctx } from 'blitz';
 import db, { Prisma } from 'db';
 
 type GetVotesInput = Pick<
-  Prisma.FindManyVoteArgs,
+  Prisma.VoteFindManyArgs,
   'where' | 'orderBy' | 'skip' | 'take'
 >;
 

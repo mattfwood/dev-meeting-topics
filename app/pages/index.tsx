@@ -105,6 +105,7 @@ const Feature = ({ feature, onVote }) => {
 const FeatureList = () => {
   const [{ features }, { refetch }] = useQuery(
     getFeatures,
+    // @ts-ignore
     {
       orderBy: { updatedAt: 'desc' },
     },

@@ -1,9 +1,10 @@
 import { Ctx } from 'blitz';
-import db, { Prisma } from 'db';
+import db from 'db';
 
-type CreateFeatureInput = Pick<Prisma.FeatureCreateArgs, 'data'>;
+// type CreateFeatureInput = Pick<Prisma.FeatureCreateArgs, 'data'>;
+
 export default async function createFeature(
-  { data }: CreateFeatureInput,
+  { data }: { data: { title: string; description: string } },
   ctx: Ctx
 ) {
   ctx.session.$authorize();

@@ -1,7 +1,7 @@
 import { Ctx, NotFoundError } from 'blitz';
 import db, { Prisma } from 'db';
 
-type GetFeatureInput = Pick<Prisma.FindFirstFeatureArgs, 'where'>;
+type GetFeatureInput = Pick<Prisma.FeatureFindFirstArgs, 'where'>;
 
 export default async function getFeature({ where }: GetFeatureInput, ctx: Ctx) {
   ctx.session.$authorize();
