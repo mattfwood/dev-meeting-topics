@@ -68,7 +68,7 @@ const Feature = ({ feature, onVote }) => {
           </Box>
         </Button>
       </Box>
-      <Box mb={6}>
+      <Flex flexDirection="column" mb={6} flex={1}>
         <Link href={`/features/${feature.id}`}>
           <a>
             <Heading
@@ -98,7 +98,7 @@ const Feature = ({ feature, onVote }) => {
             {feature.author?.name}
           </Text>
         </Flex>
-      </Box>
+      </Flex>
     </Flex>
   );
 };
