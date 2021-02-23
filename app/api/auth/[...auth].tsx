@@ -4,8 +4,8 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 const HOST =
   process.env.NODE_ENV === 'production'
-    ? 'https://example.com'
-    : 'https://feature-voting.herokuapp.com';
+    ? 'https://feature-voting.herokuapp.com'
+    : 'http://localhost:3000';
 
 export default passportAuth({
   successRedirectUrl: '/',
