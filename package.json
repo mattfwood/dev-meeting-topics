@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "blitz dev",
-    "start": "blitz start",
+    "start": "blitz start --port $PORT",
     "studio": "blitz prisma studio",
     "build": "blitz build",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
@@ -12,7 +12,8 @@
     "prisma:generate": "blitz prisma generate",
     "db:migrate": "blitz prisma migrate dev --preview-feature",
     "db:deploy": "blitz prisma migrate deploy --preview-feature",
-    "db:reset": "blitz prisma migrate reset --preview-feature"
+    "db:reset": "blitz prisma migrate reset --preview-feature",
+    "heroku-postbuild": "blitz prisma migrate deploy --preview-feature && blitz build"
   },
   "browserslist": [
     "defaults"
