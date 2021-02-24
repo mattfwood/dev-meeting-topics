@@ -1,4 +1,4 @@
-import { Ctx } from 'blitz';
+import { AuthorizationError, Ctx } from 'blitz';
 import db, { Prisma } from 'db';
 
 type DeleteFeatureInput = Pick<Prisma.FeatureDeleteArgs, 'where'>;
@@ -9,7 +9,23 @@ export default async function deleteFeature(
 ) {
   ctx.session.$authorize();
 
-  const feature = await db.feature.delete({ where });
+  const feature = await db.feature.findUnique({
+    where,
+    include: { author: true },
+  });
 
-  return feature;
+  // only allow the feature creator to delete
+  if (feature?.author?.id !== ctx.session.userId) {
+    throw new AuthorizationError();
+  }
+
+  // @TODO: probably make these null so they're not completely destoyed
+  await db.vote.deleteMany({
+    where: {
+      featureId: where.id,
+    },
+  });
+  const deletedFeature = await db.feature.delete({ where });
+
+  return deletedFeature;
 }

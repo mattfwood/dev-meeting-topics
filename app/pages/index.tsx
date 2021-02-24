@@ -9,7 +9,7 @@ import {
 import Layout from 'app/layouts/Layout';
 import logout from 'app/auth/mutations/logout';
 import { useCurrentUser } from 'app/hooks/useCurrentUser';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import {
   Button,
   Modal,
@@ -20,91 +20,19 @@ import {
   Flex,
   Stack,
   Box,
-  Heading,
-  Text,
-  Image,
 } from 'minerva-ui';
 import Form, { FORM_ERROR } from 'app/components/Form';
 import LabeledTextField from 'app/components/LabeledTextField';
 import createFeature from 'app/features/mutations/createFeature';
 import getFeatures from 'app/features/queries/getFeatures';
 import createVote from 'app/votes/mutations/createVote';
-
-const Feature = ({ feature, onVote }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const currentUser = useCurrentUser();
-
-  const votedOnFeature = feature.votes.some(
-    (vote) => vote.userId === currentUser?.id
-  );
-
-  return (
-    <Flex key={feature.id} mt={1}>
-      <Box mr={2}>
-        <Button
-          border={0}
-          p={2}
-          disabled={isLoading}
-          onClick={async () => {
-            setIsLoading(true);
-            await onVote(feature.id);
-            setIsLoading(false);
-          }}
-        >
-          <Box>
-            <Box color={votedOnFeature ? 'purple.700' : 'inherit'}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                fill="currentColor"
-                viewBox="0 0 256 256"
-              >
-                <rect width="256" height="256" fill="none" />
-                <path d="M213.65674,154.34326l-80-80a8,8,0,0,0-11.31348,0l-80,80A7.99981,7.99981,0,0,0,48,168H208a7.99981,7.99981,0,0,0,5.65674-13.65674Z" />
-              </svg>
-            </Box>
-            {feature.votes.length}
-          </Box>
-        </Button>
-      </Box>
-      <Flex flexDirection="column" mb={6} flex={1}>
-        {/* <Link href={`/features/${feature.id}`}> */}
-        <a>
-          <Heading
-            as="h2"
-            color="gray.900"
-            fontSize="lg"
-            fontWeight="500"
-            mb={2}
-          >
-            {feature.title}
-          </Heading>
-        </a>
-        {/* </Link> */}
-        <Text fontWeight={400} color="gray.600" fontSize="base" lineHeight={1}>
-          {feature.description}
-        </Text>
-        <Flex mt={3} alignItems="center">
-          <Image
-            src={feature.author?.avatar}
-            width="30px"
-            height="30px"
-            borderRadius="full"
-            mr={2}
-          />
-
-          <Text color="gray.400" fontSize="xs">
-            {feature.author?.name}
-          </Text>
-        </Flex>
-      </Flex>
-    </Flex>
-  );
-};
+import { Feature, FeatureWithAuthor } from '../components/Feature';
 
 const FeatureList = () => {
-  const [{ features }, { refetch }] = useQuery(
+  const [{ features }, { refetch }]: [
+    { features: FeatureWithAuthor[] },
+    any
+  ] = useQuery(
     getFeatures,
     // @ts-ignore
     {
@@ -115,9 +43,13 @@ const FeatureList = () => {
     }
   );
 
+  const sortedFeatures = features.sort((a, b) => {
+    return b.votes.length - a.votes.length;
+  });
+
   const [voteMutation] = useMutation(createVote);
 
-  const handleClick = async (featureId) => {
+  const handleClick = async (featureId: number) => {
     await voteMutation({
       data: { featureId },
     });
@@ -127,11 +59,13 @@ const FeatureList = () => {
 
   return (
     <Box my={2} pt={2}>
-      {features?.map((feature) => {
+      {sortedFeatures?.map((feature) => {
         return (
           <Feature
+            key={feature.id}
             feature={feature}
             onVote={async () => await handleClick(feature.id)}
+            refetch={refetch}
           />
         );
       })}
