@@ -89,7 +89,7 @@ export const Feature = ({
 }): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
   const currentUser = useCurrentUser();
-  const userCreatedFeature = currentUser.id === feature.author.id;
+  const userCreatedFeature = currentUser?.id === feature.author.id;
 
   const votedOnFeature = feature.votes.some(
     (vote) => vote.userId === currentUser?.id
