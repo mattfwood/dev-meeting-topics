@@ -70,5 +70,9 @@
     "react-test-renderer": "17.0.1",
     "ts-jest": "26.5.1"
   },
+  "cacheDirectories": [
+    "node_modules/",
+    ".next/cache/"
+  ],
   "private": true
 }
