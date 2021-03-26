@@ -80,10 +80,10 @@ const FeatureModal = () => {
   return (
     <>
       <Button variant="primary" onClick={onOpen}>
-        Create Feature
+        Add Topic
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} overflow="hidden">
-        <ModalHeader onClose={onClose}>Create New Feature</ModalHeader>
+        <ModalHeader onClose={onClose}>Create a Topic</ModalHeader>
 
         <Form
           initialValues={{ title: '', description: '' }}
@@ -118,7 +118,7 @@ const FeatureModal = () => {
           <ModalFooter px={6} py={3} bg="gray.50">
             <Flex flexDirection={['column', 'row-reverse']} radiusBottom="5px">
               <Button type="submit" width={['100%', 'auto']} variant="primary">
-                Create Feature
+                Create Topic
               </Button>
             </Flex>
           </ModalFooter>

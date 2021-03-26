@@ -6,7 +6,7 @@ import {
   Box,
   Heading,
   Text,
-  Image,
+  // Image,
   MenuContainer,
   MenuButton,
   MenuList,
@@ -26,9 +26,13 @@ const FeatureActions = ({
   const [deleteFeatureMutation] = useMutation(deleteFeature);
 
   return (
-    <Box ml={-1}>
+    <Box>
       <MenuContainer>
         <MenuButton
+          p={1}
+          pl="6px"
+          ml="-1px"
+          w="44px"
           variant="tertiary"
           _hover={{ backgroundColor: 'rgb(249, 250, 251)' }}
         >
@@ -96,9 +100,9 @@ export const Feature = ({
   );
 
   return (
-    <Box mt={1}>
+    <Box mt={3}>
       <Flex>
-        <Box mr={2}>
+        <Flex alignItems="center" flexDirection="column" mr={2}>
           <Button
             border={0}
             p={2}
@@ -128,8 +132,8 @@ export const Feature = ({
           {userCreatedFeature && (
             <FeatureActions id={feature.id} refetch={refetch} />
           )}
-        </Box>
-        <Flex flexDirection="column" mb={6} flex={1}>
+        </Flex>
+        <Flex flexDirection="column" mb={6} pt={2} flex={1}>
           <a>
             <Heading
               as="h2"
@@ -150,7 +154,7 @@ export const Feature = ({
           >
             {feature.description}
           </Text>
-          <Flex mt={3} alignItems="center">
+          {/* <Flex mt={3} alignItems="center">
             <Image
               src={feature.author?.avatar ?? undefined}
               alt={feature.author?.name ?? undefined}
@@ -163,7 +167,7 @@ export const Feature = ({
             <Text color="gray.400" fontSize="xs">
               {feature.author?.name}
             </Text>
-          </Flex>
+          </Flex> */}
         </Flex>
       </Flex>
     </Box>

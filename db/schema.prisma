@@ -18,19 +18,21 @@ enum Role {
 // --------------------------------------
 
 model User {
-  id             Int       @default(autoincrement()) @id
+  id             Int       @id @default(autoincrement())
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   name           String?
   email          String    @unique
   avatar         String?
   hashedPassword String?
-  role           Role    @default(USER)
+  role           Role      @default(USER)
   sessions       Session[]
+  Feature        Feature[]
+  Vote           Vote[]
 }
 
 model Session {
-  id                 Int       @default(autoincrement()) @id
+  id                 Int       @id @default(autoincrement())
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   expiresAt          DateTime?
@@ -44,21 +46,23 @@ model Session {
 }
 
 model Feature {
-  id          Int      @default(autoincrement()) @id
+  id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   title       String
   description String
-  author      User
+  author      User     @relation(fields: [userId], references: [id])
   votes       Vote[]
+  userId      Int
 }
 
 model Vote {
-  id        Int      @default(autoincrement()) @id
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   value     Int      @default(0)
-  user      User
-  feature    Feature?  @relation(fields: [featureId], references: [id])
-  featureId  Int?
+  user      User     @relation(fields: [userId], references: [id])
+  feature   Feature? @relation(fields: [featureId], references: [id])
+  featureId Int?
+  userId    Int
 }
