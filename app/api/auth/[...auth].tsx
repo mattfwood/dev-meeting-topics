@@ -4,7 +4,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 const HOST =
   process.env.NODE_ENV === 'production'
-    ? 'https://feature-voting.herokuapp.com'
+    ? 'https://dev-meeting-topics.herokuapp.com'
     : 'http://localhost:3000';
 
 export default passportAuth({
