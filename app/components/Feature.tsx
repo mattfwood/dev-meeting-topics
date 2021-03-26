@@ -27,7 +27,7 @@ const FeatureActions = ({
 }: {
   id: number;
   refetch: () => void;
-  feature: Feature;
+  feature: FeatureType;
 }) => {
   const [deleteFeatureMutation] = useMutation(deleteFeature);
   const { isOpen, onOpen, onClose } = useDisclosure();

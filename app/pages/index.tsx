@@ -28,6 +28,7 @@ import getFeatures from 'app/features/queries/getFeatures';
 import createVote from 'app/votes/mutations/createVote';
 import { Feature, FeatureWithAuthor } from '../components/Feature';
 import updateFeature from 'app/features/mutations/updateFeature';
+import { Feature as FeatureType } from 'db';
 
 const FeatureList = () => {
   const [{ features }, { refetch }]: [
@@ -74,11 +75,13 @@ const FeatureList = () => {
   );
 };
 
+type FeatureFields = Pick<FeatureType, 'id' | 'title' | 'description'>;
+
 export const FeatureForm = ({
   initialValues,
   onSuccess,
 }: {
-  initialValues?: any;
+  initialValues?: FeatureFields;
   onSuccess?: () => void;
 }) => {
   const [createFeatureMutation] = useMutation(createFeature);
@@ -90,7 +93,7 @@ export const FeatureForm = ({
     <Form
       initialValues={initialValues || { title: '', description: '' }}
       resetFormOnSubmit
-      onSubmit={async (values) => {
+      onSubmit={async (values: FeatureFields) => {
         try {
           if (isEditing) {
             const { id, title, description } = values;
