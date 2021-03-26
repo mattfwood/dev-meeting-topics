@@ -16,6 +16,7 @@ export default async function createVote(
   const existingVote = await db.vote.findFirst({
     where: {
       featureId: data.featureId,
+      userId: ctx.session.userId,
     },
   });
 
