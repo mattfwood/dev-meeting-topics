@@ -27,6 +27,7 @@ import createFeature from 'app/features/mutations/createFeature';
 import getFeatures from 'app/features/queries/getFeatures';
 import createVote from 'app/votes/mutations/createVote';
 import { Feature, FeatureWithAuthor } from '../components/Feature';
+import updateFeature from 'app/features/mutations/updateFeature';
 
 const FeatureList = () => {
   const [{ features }, { refetch }]: [
@@ -73,9 +74,69 @@ const FeatureList = () => {
   );
 };
 
+export const FeatureForm = ({
+  initialValues,
+  onSuccess,
+}: {
+  initialValues?: any;
+  onSuccess?: () => void;
+}) => {
+  const [createFeatureMutation] = useMutation(createFeature);
+  const [updateFeatureMutation] = useMutation(updateFeature);
+
+  const isEditing = Boolean(initialValues);
+
+  return (
+    <Form
+      initialValues={initialValues || { title: '', description: '' }}
+      resetFormOnSubmit
+      onSubmit={async (values) => {
+        try {
+          if (isEditing) {
+            const { id, title, description } = values;
+            await updateFeatureMutation({
+              where: { id },
+              data: { title, description },
+            });
+          } else {
+            await createFeatureMutation({ data: values });
+          }
+          await invalidateQuery(getFeatures);
+          onSuccess?.();
+        } catch (error) {
+          if (error instanceof AuthenticationError) {
+            return {
+              [FORM_ERROR]: 'Sorry, those credentials are invalid',
+            };
+          } else {
+            return {
+              [FORM_ERROR]:
+                'Sorry, we had an unexpected error. Please try again. - ' +
+                error.toString(),
+            };
+          }
+        }
+      }}
+    >
+      <ModalBody>
+        <Stack>
+          <LabeledTextField name="title" label="Title" />
+          <LabeledTextField name="description" label="Description" />
+        </Stack>
+      </ModalBody>
+      <ModalFooter px={6} py={3} bg="gray.50">
+        <Flex flexDirection={['column', 'row-reverse']} radiusBottom="5px">
+          <Button type="submit" width={['100%', 'auto']} variant="primary">
+            {isEditing ? 'Update' : 'Create'} Topic
+          </Button>
+        </Flex>
+      </ModalFooter>
+    </Form>
+  );
+};
+
 const FeatureModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [featureMutation] = useMutation(createFeature);
 
   return (
     <>
@@ -84,9 +145,9 @@ const FeatureModal = () => {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} overflow="hidden">
         <ModalHeader onClose={onClose}>Create a Topic</ModalHeader>
-
-        <Form
-          initialValues={{ title: '', description: '' }}
+        <FeatureForm onSuccess={onClose} />
+        {/* <Form
+          initialValues={{ title, description }}
           resetFormOnSubmit
           onSubmit={async (values) => {
             try {
@@ -122,7 +183,7 @@ const FeatureModal = () => {
               </Button>
             </Flex>
           </ModalFooter>
-        </Form>
+        </Form> */}
       </Modal>
     </>
   );

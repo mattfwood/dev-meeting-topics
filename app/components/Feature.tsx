@@ -11,19 +11,26 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  useDisclosure,
+  Modal,
+  ModalHeader,
 } from 'minerva-ui';
 import deleteFeature from 'app/features/mutations/deleteFeature';
 import { useMutation } from '@blitzjs/core';
 import { Feature as FeatureType, User, Vote } from 'db';
+import { FeatureForm } from 'app/pages';
 
 const FeatureActions = ({
   id,
   refetch,
+  feature,
 }: {
   id: number;
   refetch: () => void;
+  feature: Feature;
 }) => {
   const [deleteFeatureMutation] = useMutation(deleteFeature);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box>
@@ -65,7 +72,7 @@ const FeatureActions = ({
           </svg>
         </MenuButton>
         <MenuList>
-          {/* <MenuItem onSelect={() => alert('Settings')}>Edit</MenuItem> */}
+          <MenuItem onSelect={onOpen}>Edit</MenuItem>
           <MenuItem
             onSelect={async () => {
               await deleteFeatureMutation({ where: { id } });
@@ -76,6 +83,10 @@ const FeatureActions = ({
           </MenuItem>
         </MenuList>
       </MenuContainer>
+      <Modal isOpen={isOpen} onClose={onClose} overflow="hidden">
+        <ModalHeader onClose={onClose}>Update Topic</ModalHeader>
+        <FeatureForm initialValues={feature} onSuccess={onClose} />
+      </Modal>
     </Box>
   );
 };
@@ -130,7 +141,11 @@ export const Feature = ({
             </Box>
           </Button>
           {userCreatedFeature && (
-            <FeatureActions id={feature.id} refetch={refetch} />
+            <FeatureActions
+              id={feature.id}
+              feature={feature}
+              refetch={refetch}
+            />
           )}
         </Flex>
         <Flex flexDirection="column" mb={6} pt={2} flex={1}>

@@ -19,7 +19,7 @@ export default async function deleteFeature(
     throw new AuthorizationError();
   }
 
-  // @TODO: probably make these null so they're not completely destoyed
+  // @TODO: probably make these null so they're not completely destroyed
   await db.vote.deleteMany({
     where: {
       featureId: where.id,
